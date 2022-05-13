@@ -1,0 +1,48 @@
+#DEPLOYMENT
+
+apiVersion: apps/v1
+kind: Deployment
+# deployment metadata, in this case a name
+metadata:
+  name: python-test-deployment
+spec:
+  # which pods to use, match by metadata.labels.app
+  selector:
+    matchLabels:
+      app: python-test-pod
+  replicas: 2 # number of pods running, loadbalancer will choose one of them
+  # pod template
+  template:
+    metadata:
+      labels:
+        app: python-test-pod
+    spec:
+      containers:
+        - name: python-test-container # container name
+          image: <username>/<image>:<version> # FILL WITH YOUR OWN PYTHON IMAGE FROM THE DOCKER EXERCISE 3
+          ports:
+            - containerPort: 80 # port that the docker image exposes
+          resources:
+            # how much resources is reserved for the running pod
+            requests:
+              cpu: 250m
+              memory: 128Mi
+            # what is the upper limit of resources for the running pod 
+            limits:
+              cpu: 500m
+              memory: 256Mi
+---
+# SERVICE
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-test-service
+spec:
+  selector:
+    app: python-test-pod # which pods to direct to
+  ports:
+    - protocol: TCP
+      port: 8081 # port that the user will see the server working on
+      targetPort: 80 # port that the docker image exposes
+  type: LoadBalancer
