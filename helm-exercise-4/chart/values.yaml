@@ -1,0 +1,4 @@
+image:
+  # FILL WITH YOUR OWN PYTHON IMAGE REPOSITORY AND TAG FROM THE DOCKER EXERCISE 3
+  repository: <username>/<image> 
+  tag: <version>

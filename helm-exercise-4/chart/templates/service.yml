@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Release.Name}}-service
+spec:
+  selector:
+    app: {{.Release.Name}}-pod # which pods to direct to
+  ports:
+    - protocol: TCP
+      port: 8081 # port that the user will see the server working on
+      targetPort: 80 # port that the docker image exposes
+  type: LoadBalancer

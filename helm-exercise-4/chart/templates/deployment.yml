@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+# deployment metadata, in this case a name
+metadata:
+  name: {{.Release.Name}}-deployment
+spec:
+  # which pods to use, match by metadata.labels.app
+  selector:
+    matchLabels:
+      app: {{.Release.Name}}-pod
+  replicas: 2 # number of pods running, loadbalancer will choose one of them
+  # pod template
+  template:
+    metadata:
+      labels:
+        app: {{.Release.Name}}-pod
+    spec:
+      containers:
+        - name: {{.Release.Name}}-container # container name
+          image: "{{.Values.image.repository}}:{{.Values.image.tag}}"
+          ports:
+            - containerPort: 80 # port that the docker image exposes
+          resources:
+            # how much resources is reserved for the running pod
+            requests:
+              cpu: 250m
+              memory: 128Mi
+            # what is the upper limit of resources for the running pod 
+            limits:
+              cpu: 500m
+              memory: 256Mi
