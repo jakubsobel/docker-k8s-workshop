@@ -1,0 +1,9 @@
+services:
+  books-web:
+    # fill with the correct image, volumes and ports for the Exercise 2 nginx server
+    image: ""
+    depends_on:
+      - books-api
+  books-api:
+    # fill with the correct image, volumes and ports for the Exercise 3 python server
+    image: ""
